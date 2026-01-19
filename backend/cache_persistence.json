@@ -1,0 +1,34 @@
+{
+  "blacklist:token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJ1c2VybmFtZSI6IjEyMyIsImVtYWlsIjoiMTYwNzY2MzUzM0BxcS5jb20iLCJleHAiOjE3Njc3Njk4NjQsIm5iZiI6MTc2NzY4MzQ2NCwiaWF0IjoxNzY3NjgzNDY0fQ.1VM6ABBc8J6xPnR2JJqqIH7IwA5HBjNgFxu4Tjvfi64": {
+    "value": "true",
+    "expiration": "2026-01-07T15:11:04+08:00"
+  },
+  "blacklist:token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJ1c2VybmFtZSI6IjEyMyIsImVtYWlsIjoiMTYwNzY2MzUzM0BxcS5jb20iLCJleHAiOjE3Njc3NzA4MDAsIm5iZiI6MTc2NzY4NDQwMCwiaWF0IjoxNzY3Njg0NDAwfQ.zim_TKEaq-WcjgMzpN8yNd0eEO83B4lOiJdspbnAQ00": {
+    "value": "true",
+    "expiration": "2026-01-07T15:26:40+08:00"
+  },
+  "blacklist:token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJ1c2VybmFtZSI6IjEyMyIsImVtYWlsIjoiMTYwNzY2MzUzM0BxcS5jb20iLCJleHAiOjE3Njc3NzA5NTIsIm5iZiI6MTc2NzY4NDU1MiwiaWF0IjoxNzY3Njg0NTUyfQ.wiYz_uWIuZ6wpvXNIj3q2HYYlisxWzoHxWnLxKob0NQ": {
+    "value": "true",
+    "expiration": "2026-01-07T15:29:12+08:00"
+  },
+  "blacklist:token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJ1c2VybmFtZSI6IjEyMyIsImVtYWlsIjoiMTYwNzY2MzUzM0BxcS5jb20iLCJleHAiOjE3Njc3NzE2MzgsIm5iZiI6MTc2NzY4NTIzOCwiaWF0IjoxNzY3Njg1MjM4fQ.J6yLaTjIoGDZeh8iB16mt0lShbY1XUlWJrIV4bfv_Ug": {
+    "value": "true",
+    "expiration": "2026-01-07T15:40:38+08:00"
+  },
+  "blacklist:token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJ1c2VybmFtZSI6IjEyMyIsImVtYWlsIjoiMTYwNzY2MzUzM0BxcS5jb20iLCJleHAiOjE3Njc5NDU1ODksIm5iZiI6MTc2Nzg1OTE4OSwiaWF0IjoxNzY3ODU5MTg5fQ.0ZVWFv9kLOabA8m5AjZUNytYjJkQFd8lkVSH8opOYmI": {
+    "value": "true",
+    "expiration": "2026-01-09T15:59:49+08:00"
+  },
+  "blacklist:token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJ1c2VybmFtZSI6IjEyMyIsImVtYWlsIjoiMTYwNzY2MzUzM0BxcS5jb20iLCJleHAiOjE3Njc5NDUxNzEsIm5iZiI6MTc2Nzg1ODc3MSwiaWF0IjoxNzY3ODU4NzcxfQ.f0PP9WOUqlV6PtwZBWhry_pH5KIiALyKHEnYQNzdTTk": {
+    "value": "true",
+    "expiration": "2026-01-09T15:52:51+08:00"
+  },
+  "user:token:4": {
+    "value": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJ1c2VybmFtZSI6IjEyMyIsImVtYWlsIjoiMTYwNzY2MzUzM0BxcS5jb20iLCJleHAiOjE3Njc5NDY1NTcsIm5iZiI6MTc2Nzg2MDE1NywiaWF0IjoxNzY3ODYwMTU3fQ.2w_u0rn1bQIizYAxwgrv8Z8ww6hmEmkzsFKJXKS2kSc\"",
+    "expiration": "2026-01-09T16:15:57.2821251+08:00"
+  },
+  "user:token:5": {
+    "value": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6IjIzNCIsImVtYWlsIjoiMTIzQHFxLmNvbSIsImV4cCI6MTc2NjgxOTM4MiwibmJmIjoxNzY2NzMyOTgyLCJpYXQiOjE3NjY3MzI5ODJ9.wUGBFmdrWyB7TM16asJyVpWPaU6FyF-9AUNlpGUN6yo\"",
+    "expiration": "2025-12-27T15:09:42.1935788+08:00"
+  }
+}
