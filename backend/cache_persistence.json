@@ -23,12 +23,28 @@
     "value": "true",
     "expiration": "2026-01-09T15:52:51+08:00"
   },
+  "blacklist:token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJ1c2VybmFtZSI6IjEyMyIsImVtYWlsIjoiMTYwNzY2MzUzM0BxcS5jb20iLCJleHAiOjE3Njg4NzQ2NzksIm5iZiI6MTc2ODc4ODI3OSwiaWF0IjoxNzY4Nzg4Mjc5fQ.J3KRncCnUF6OCTvB9xx7buf3BV5mNUUiq6cdSjMCktI": {
+    "value": "true",
+    "expiration": "2026-01-20T10:04:39+08:00"
+  },
+  "blacklist:token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJ1c2VybmFtZSI6IjEyMyIsImVtYWlsIjoiMTYwNzY2MzUzM0BxcS5jb20iLCJleHAiOjE3Njg4NzU0NjYsIm5iZiI6MTc2ODc4OTA2NiwiaWF0IjoxNzY4Nzg5MDY2fQ.T17d8nGkzqVvzDCQhJpXFlY099v_H5sOhJmgvKQXAFk": {
+    "value": "true",
+    "expiration": "2026-01-20T10:17:46+08:00"
+  },
+  "blacklist:token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJ1c2VybmFtZSI6IjEyMzQiLCJlbWFpbCI6IjEyMzRAcXEuY29tIiwiZXhwIjoxNzY4ODc1MzM5LCJuYmYiOjE3Njg3ODg5MzksImlhdCI6MTc2ODc4ODkzOX0.eX-0Xjuw3EFyZhvqIkfx6kalF6gwelCJ6z_NpoV5hxU": {
+    "value": "true",
+    "expiration": "2026-01-20T10:15:39+08:00"
+  },
   "user:token:4": {
-    "value": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJ1c2VybmFtZSI6IjEyMyIsImVtYWlsIjoiMTYwNzY2MzUzM0BxcS5jb20iLCJleHAiOjE3Njc5NDY1NTcsIm5iZiI6MTc2Nzg2MDE1NywiaWF0IjoxNzY3ODYwMTU3fQ.2w_u0rn1bQIizYAxwgrv8Z8ww6hmEmkzsFKJXKS2kSc\"",
-    "expiration": "2026-01-09T16:15:57.2821251+08:00"
+    "value": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJ1c2VybmFtZSI6IjEyMyIsImVtYWlsIjoiMTYwNzY2MzUzM0BxcS5jb20iLCJleHAiOjE3Njg4NzU0NjYsIm5iZiI6MTc2ODc4OTA2NiwiaWF0IjoxNzY4Nzg5MDY2fQ.T17d8nGkzqVvzDCQhJpXFlY099v_H5sOhJmgvKQXAFk\"",
+    "expiration": "2026-01-20T10:17:46.829749+08:00"
   },
   "user:token:5": {
     "value": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6IjIzNCIsImVtYWlsIjoiMTIzQHFxLmNvbSIsImV4cCI6MTc2NjgxOTM4MiwibmJmIjoxNzY2NzMyOTgyLCJpYXQiOjE3NjY3MzI5ODJ9.wUGBFmdrWyB7TM16asJyVpWPaU6FyF-9AUNlpGUN6yo\"",
     "expiration": "2025-12-27T15:09:42.1935788+08:00"
+  },
+  "user:token:6": {
+    "value": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJ1c2VybmFtZSI6IjEyMzQiLCJlbWFpbCI6IjEyMzRAcXEuY29tIiwiZXhwIjoxNzY4ODc1NTA3LCJuYmYiOjE3Njg3ODkxMDcsImlhdCI6MTc2ODc4OTEwN30.onHXHOZQ3xeO-iphzfXv0-tWBzatMLBwt0ahBUKjc0U\"",
+    "expiration": "2026-01-20T10:18:27.9561566+08:00"
   }
 }

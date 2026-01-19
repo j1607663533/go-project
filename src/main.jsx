@@ -19,6 +19,7 @@ import SystemMenus from './pages/SystemMenus.jsx';
 import MenuDebug from './pages/MenuDebug.jsx';
 import Layout from './components/Layout.jsx';
 import AntdLayout from './components/AntdLayout.jsx';
+import AiChat from './pages/AiChat.jsx';
 import { isAuthenticated } from './api/auth';
 import './index.css'
 import 'antd/dist/reset.css';
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
       {
         path: "system/menus",
         element: <SystemMenus />,
+      },
+      {
+        path: "ai-chat",
+        element: <AiChat />,
       },
       {
         path: "debug",

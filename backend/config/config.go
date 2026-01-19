@@ -12,6 +12,7 @@ type Config struct {
 	Port string
 	Mode string
 	DB   DatabaseConfig
+	AI   AIConfig
 }
 
 type DatabaseConfig struct {
@@ -20,6 +21,12 @@ type DatabaseConfig struct {
 	User     string
 	Password string
 	DBName   string
+}
+
+type AIConfig struct {
+	APIKey  string
+	BaseURL string
+	Model   string
 }
 
 var AppConfig *Config
@@ -41,6 +48,11 @@ func LoadConfig() {
 			User:     getEnv("DB_USER", "root"),
 			Password: getEnv("DB_PASSWORD", "123456"),
 			DBName:   getEnv("DB_NAME", "projectTest"),
+		},
+		AI: AIConfig{
+			APIKey:  getEnv("AI_API_KEY", "sk-api-myj2RN7e200E4y-Buq28YZgXeCUMj7ZmtGkRiZ-m9sdc3rxPnOx6lP4ILt685kM71H0jrc07OFPF7jHMT-VEsxKKkRzNnal-pXQw5SrnVTSC7GH6QN62O_M"),
+			BaseURL: getEnv("AI_BASE_URL", "https://api.minimax.chat/v1"),
+			Model:   getEnv("AI_MODEL", "abab6.5s-chat"),
 		},
 	}
 

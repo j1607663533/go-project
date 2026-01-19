@@ -61,6 +61,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	SetupOrderRoutes(api, orderController)                  // 订单路由
 	SetupMenuRoutes(api, menuController)                    // 菜单路由
 	SetupRoleRoutes(api, roleController)                    // 角色路由
+	RegisterAIRoutes(api)                                   // AI 路由
 
 	return r
 }

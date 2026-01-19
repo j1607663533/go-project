@@ -21,6 +21,7 @@ import {
   SettingOutlined,
   TeamOutlined,
   MenuOutlined as MenuIconOutlined,
+  RobotOutlined,
 } from '@ant-design/icons';
 import { logout, getCurrentUser, getUserMenus } from '../api/auth';
 
@@ -35,6 +36,7 @@ const iconMap = {
   SettingOutlined: <SettingOutlined />,
   TeamOutlined: <TeamOutlined />,
   MenuOutlined: <MenuIconOutlined />,
+  RobotOutlined: <RobotOutlined />,
 };
 
 const AntdLayout = () => {
@@ -52,6 +54,17 @@ const AntdLayout = () => {
   useEffect(() => {
     const menus = getUserMenus();
     const items = buildMenuItems(menus);
+    
+    // 强制加入 AI 对话菜单项
+    const hasAiChat = items.some(item => item.key === '/ai-chat');
+    if (!hasAiChat) {
+      items.push({
+        key: '/ai-chat',
+        icon: <RobotOutlined />,
+        label: 'AI 智能对话',
+      });
+    }
+    
     setMenuItems(items);
   }, []);
 
