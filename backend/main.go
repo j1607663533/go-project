@@ -9,6 +9,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @title Gin Backend API
+// @version 1.0
+// @description This is a sample Gin backend service.
+// @host localhost:8080
+// @BasePath /api/v1
+
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Bearer
+
 func main() {
 	// 加载配置
 	config.LoadConfig()

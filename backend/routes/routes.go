@@ -6,7 +6,11 @@ import (
 	"gin-backend/repositories"
 	"gin-backend/services"
 
+	_ "gin-backend/docs"
+
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/gorm"
 )
 
@@ -51,6 +55,9 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 			"message": "服务运行正常",
 		})
 	})
+
+	// Swagger 接口文档
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// API 路由组
 	api := r.Group("/api/v1")

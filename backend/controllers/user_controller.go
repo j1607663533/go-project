@@ -25,6 +25,15 @@ func NewUserController(userService services.UserService) *UserController {
 }
 
 // GetUsers 获取用户列表
+// @Summary 获取所有用户
+// @Description 获取系统中所有注册用户的列表
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Success 200 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /users [get]
 func (ctrl *UserController) GetUsers(c *gin.Context) {
 
 	fmt.Println("获取用户列表")
@@ -47,6 +56,16 @@ func (ctrl *UserController) GetUsers(c *gin.Context) {
 }
 
 // GetUser 获取单个用户
+// @Summary 获取指定ID的用户
+// @Description 通过用户ID获取用户详细信息
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param id path int true "用户ID"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404 {object} map[string]interface{}
+// @Router /users/{id} [get]
 func (ctrl *UserController) GetUser(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -74,6 +93,15 @@ func (ctrl *UserController) GetUser(c *gin.Context) {
 }
 
 // CreateUser 创建用户
+// @Summary 创建新用户
+// @Description 手动创建一个新用户
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Param user body models.UserCreateRequest true "用户信息"
+// @Success 201 {object} map[string]interface{}
+// @Failure 400,409,500 {object} map[string]interface{}
+// @Router /users [post]
 func (ctrl *UserController) CreateUser(c *gin.Context) {
 	var req models.UserCreateRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -105,7 +133,16 @@ func (ctrl *UserController) CreateUser(c *gin.Context) {
 	})
 }
 
-// Register 用户注册（需要验证码）
+// Register 用户注册
+// @Summary 用户注册
+// @Description 用户通过手机/邮箱进行注册，包含验证码校验
+// @Tags 认证管理
+// @Accept json
+// @Produce json
+// @Param register body object true "注册信息"
+// @Success 201 {object} map[string]interface{}
+// @Failure 400,409,500 {object} map[string]interface{}
+// @Router /register [post]
 func (ctrl *UserController) Register(c *gin.Context) {
 	var req struct {
 		models.UserCreateRequest
@@ -256,6 +293,15 @@ func (ctrl *UserController) GetProfile(c *gin.Context) {
 }
 
 // Login 用户登录
+// @Summary 用户登录
+// @Description 使用用户名和密码获取 JWT Token
+// @Tags 认证管理
+// @Accept json
+// @Produce json
+// @Param login body models.LoginRequest true "登录信息"
+// @Success 200 {object} map[string]interface{}
+// @Failure 401 {object} map[string]interface{}
+// @Router /login [post]
 func (ctrl *UserController) Login(c *gin.Context) {
 	var req models.LoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

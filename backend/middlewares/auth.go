@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"gin-backend/utils"
 	"net/http"
 	"strings"
@@ -12,6 +13,8 @@ import (
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 从请求头获取 token
+
+		fmt.Println(c.GetHeader("Authorization"))
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{
