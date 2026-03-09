@@ -146,6 +146,8 @@ const Register = () => {
         navigate('/login');
       }, 3000);
     } catch (err) {
+
+      console.log(err);
       setError(err.message);
       // 刷新验证码
       refreshCaptcha();
@@ -391,11 +393,11 @@ const Register = () => {
                     style={{
                       width: '100%',
                       height: '100%',
-                      objectFit: 'cover',
+                      objectFit: 'fill',
                     }}
                   />
                 )}
-                <IconButton
+                {/* <IconButton
                   size="small"
                   sx={{
                     position: 'absolute',
@@ -408,7 +410,7 @@ const Register = () => {
                   }}
                 >
                   <Refresh fontSize="small" />
-                </IconButton>
+                </IconButton> */}
               </Box>
             </Box>
 

@@ -18,6 +18,12 @@ func SetupAuthRoutes(api *gin.RouterGroup, userController *controllers.UserContr
 	api.POST("/login", userController.Login)       // 用户登录
 	api.POST("/logout", userController.ExitLogin)  // 用户退出登录
 
+	// 微信扫码登录
+	api.GET("/auth/wechat/qrcode", userController.GetWeChatQRCode)   // 获取微信登录二维码
+	api.GET("/auth/wechat/status", userController.CheckWeChatStatus) // 检查微信登录状态
+	api.GET("/auth/wechat/mock", userController.MockWeChatScan)      // 模拟微信扫码成功（开发用）
+	api.Any("/auth/wechat/callback", userController.WechatCallback)  // 微信服务端回调
+
 	// 需要认证的路由
 	auth := api.Group("/auth")
 	auth.Use(middlewares.AuthMiddleware())

@@ -17,7 +17,7 @@ import (
 
 // @securityDefinitions.apikey Bearer
 // @in header
-// @name Bearer
+// @name Authorization
 
 func main() {
 	// 加载配置

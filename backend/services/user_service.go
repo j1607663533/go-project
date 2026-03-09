@@ -18,6 +18,7 @@ type UserService interface {
 	DeleteUser(id uint) error
 	GetProfile(userID uint) (*models.UserResponse, error)
 	Login(req *models.LoginRequest) (*models.LoginResponse, error)
+	LoginByUserID(userID uint) (*models.LoginResponse, error)
 	ExitLogin(token string) error
 	// 批量操作（演示 make 和 Channel）
 	GetUsersByIDs(ids []uint) ([]models.UserResponse, error)
@@ -224,6 +225,40 @@ func (s *userService) Login(req *models.LoginRequest) (*models.LoginResponse, er
 		Menus: menus,
 	}, nil
 
+}
+
+// LoginByUserID 根据用户ID直接登录（用于微信、OAuth等）
+func (s *userService) LoginByUserID(userID uint) (*models.LoginResponse, error) {
+	user, err := s.userRepo.FindByID(userID)
+	if err != nil || user == nil {
+		return nil, errors.New("用户不存在")
+	}
+
+	// 生成 JWT token
+	token, err := utils.GenerateToken(user.ID, user.Username, user.Email)
+	if err != nil {
+		return nil, errors.New("生成 token 失败")
+	}
+
+	// 单点登录
+	if err := utils.SetUserToken(user.ID, token); err != nil {
+		return nil, errors.New("设置用户 token 失败")
+	}
+
+	// 获取用户菜单
+	var menus []models.MenuTreeResponse
+	if user.RoleID > 0 {
+		userMenus, err := s.menuRepo.FindByRoleID(user.RoleID)
+		if err == nil {
+			menus = s.menuRepo.BuildMenuTree(userMenus)
+		}
+	}
+
+	return &models.LoginResponse{
+		Token: token,
+		User:  user.ToResponse(),
+		Menus: menus,
+	}, nil
 }
 
 // ExitLogin 退出登录

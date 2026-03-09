@@ -10,17 +10,20 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/silenceper/wechat/v2/officialaccount/message"
 )
 
 // UserController 用户控制器
 type UserController struct {
-	userService services.UserService
+	userService   services.UserService
+	wechatService services.WechatService
 }
 
 // NewUserController 创建用户控制器实例
-func NewUserController(userService services.UserService) *UserController {
+func NewUserController(userService services.UserService, wechatService services.WechatService) *UserController {
 	return &UserController{
-		userService: userService,
+		userService:   userService,
+		wechatService: wechatService,
 	}
 }
 
@@ -98,6 +101,7 @@ func (ctrl *UserController) GetUser(c *gin.Context) {
 // @Tags 用户管理
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param user body models.UserCreateRequest true "用户信息"
 // @Success 201 {object} map[string]interface{}
 // @Failure 400,409,500 {object} map[string]interface{}
@@ -190,6 +194,17 @@ func (ctrl *UserController) Register(c *gin.Context) {
 }
 
 // UpdateUser 更新用户
+// @Summary 更新用户信息
+// @Description 修改指定用户的信息
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param id path int true "用户ID"
+// @Param user body models.UserUpdateRequest true "更新信息"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,409 {object} map[string]interface{}
+// @Router /users/{id} [put]
 func (ctrl *UserController) UpdateUser(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 
@@ -235,6 +250,16 @@ func (ctrl *UserController) UpdateUser(c *gin.Context) {
 }
 
 // DeleteUser 删除用户
+// @Summary 删除指定用户
+// @Description 通过用户ID删除用户
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param id path int true "用户ID"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /users/{id} [delete]
 func (ctrl *UserController) DeleteUser(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -264,7 +289,16 @@ func (ctrl *UserController) DeleteUser(c *gin.Context) {
 	})
 }
 
-// GetProfile 获取当前用户信息（需要认证）
+// GetProfile 获取当前用户信息
+// @Summary 获取个人资料
+// @Description 获取当前登录用户的详细信息
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Success 200 {object} map[string]interface{}
+// @Failure 401,404 {object} map[string]interface{}
+// @Router /users/profile [get]
 func (ctrl *UserController) GetProfile(c *gin.Context) {
 	// 从上下文中获取当前用户ID（由认证中间件设置）
 	userID, exists := c.Get("userID")
@@ -368,4 +402,110 @@ func (ctrl *UserController) ExitLogin(c *gin.Context) {
 		"code":    0,
 		"message": "退出登录成功",
 	})
+}
+
+// GetWeChatQRCode 获取微信登录二维码
+func (ctrl *UserController) GetWeChatQRCode(c *gin.Context) {
+	session, qrURL, err := ctrl.wechatService.GetQRCode()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "获取二维码失败",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    0,
+		"message": "success",
+		"data": gin.H{
+			"qr_url":    qrURL,
+			"scene_id":  session.SceneID,
+			"expire_at": session.ExpireAt.UnixMilli(),
+		},
+	})
+}
+
+// CheckWeChatStatus 检查微信登录状态（轮询接口）
+func (ctrl *UserController) CheckWeChatStatus(c *gin.Context) {
+	sceneID := c.Query("scene_id")
+	if sceneID == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"code": 400, "message": "scene_id 不能为空"})
+		return
+	}
+
+	session, err := ctrl.wechatService.CheckStatus(sceneID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"code": 400, "message": err.Error()})
+		return
+	}
+
+	// 如果状态是成功，则返回用户 Token
+	if session.Status == services.StatusSuccess {
+		loginResp, err := ctrl.userService.LoginByUserID(session.UserID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"code": 500, "message": "授权登录失败"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"code":    0,
+			"message": "success",
+			"data": gin.H{
+				"status": "SUCCESS",
+				"token":  loginResp.Token,
+				"user":   loginResp.User,
+				"menus":  loginResp.Menus,
+			},
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    0,
+		"message": "success",
+		"data": gin.H{
+			"status": session.Status,
+		},
+	})
+}
+
+// MockWeChatScan 模拟微信扫码成功（仅供开发测试使用）
+func (ctrl *UserController) MockWeChatScan(c *gin.Context) {
+	sceneID := c.Query("scene_id")
+	userIDStr := c.DefaultQuery("user_id", "1") // 默认为管理员用户
+	userID, _ := strconv.Atoi(userIDStr)
+
+	err := ctrl.wechatService.MockScan(sceneID, uint(userID))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"code": 400, "message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    0,
+		"message": "模拟扫码授权成功，请查看前端状态",
+	})
+}
+
+// WechatCallback 处理微信服务端推送的消息
+func (ctrl *UserController) WechatCallback(c *gin.Context) {
+	// 获取微信 SDK 的 Server 对象
+	server := ctrl.wechatService.GetServer(c.Request, c.Writer)
+	if server == nil {
+		c.String(http.StatusOK, "success") // 或者返回错误，视情况而定
+		return
+	}
+
+	// 设置消息处理回调
+	server.SetMessageHandler(func(msg *message.MixMessage) *message.Reply {
+		return ctrl.wechatService.HandleCallback(*msg)
+	})
+
+	// 处理请求并发送响应
+	err := server.Serve()
+	if err != nil {
+		fmt.Printf("微信回调处理失败: %v\n", err)
+		return
+	}
 }

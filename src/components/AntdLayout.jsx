@@ -26,7 +26,7 @@ import {
 import { logout, getCurrentUser, getUserMenus } from '../api/auth';
 
 const { Header, Sider, Content } = Layout;
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 // 图标映射
 const iconMap = {
@@ -162,24 +162,27 @@ const AntdLayout = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            background: 'rgba(255, 255, 255, 0.1)',
-            margin: '16px',
-            borderRadius: '8px',
-            transition: 'all 0.2s',
+            background: 'rgba(255, 255, 255, 0.05)',
+            margin: '20px 16px 32px',
+            borderRadius: '12px',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
           }}
         >
           <Text
             style={{
               color: '#fff',
-              fontSize: collapsed ? 16 : 20,
-              fontWeight: 'bold',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              fontSize: collapsed ? 16 : 22,
+              fontFamily: 'var(--font-heading)',
+              fontWeight: 700,
+              background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              transition: 'all 0.2s',
+              transition: 'all 0.3s',
+              letterSpacing: collapsed ? 0 : 1,
             }}
           >
-            {collapsed ? 'RA' : 'React Admin'}
+            {collapsed ? 'RA' : 'REACT ADMIN'}
           </Text>
         </div>
 
@@ -192,24 +195,26 @@ const AntdLayout = () => {
           onClick={handleMenuClick}
           style={{
             borderRight: 0,
+            padding: '0 8px',
           }}
         />
       </Sider>
 
       {/* 主布局 */}
-      <Layout style={{ marginLeft: collapsed ? 80 : 200, transition: 'all 0.2s' }}>
+      <Layout style={{ marginLeft: collapsed ? 80 : 200, transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}>
         {/* 顶部导航栏 */}
         <Header
+          className="glass-morphism"
           style={{
             padding: '0 24px',
-            background: colorBgContainer,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            boxShadow: '0 1px 4px rgba(0,21,41,.08)',
             position: 'sticky',
             top: 0,
-            zIndex: 1,
+            zIndex: 10,
+            height: 64,
+            width: '100%',
           }}
         >
           {/* 左侧：折叠按钮和标题 */}
@@ -217,51 +222,65 @@ const AntdLayout = () => {
             <div
               onClick={() => setCollapsed(!collapsed)}
               style={{
-                fontSize: 18,
+                fontSize: 20,
                 cursor: 'pointer',
-                transition: 'color 0.3s',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 36,
+                height: 36,
+                borderRadius: '8px',
+                background: 'rgba(99, 102, 241, 0.1)',
+                color: '#6366f1',
+                transition: 'all 0.2s',
               }}
-              onMouseEnter={(e) => (e.target.style.color = '#1890ff')}
-              onMouseLeave={(e) => (e.target.style.color = 'inherit')}
             >
               {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </div>
-            <Text strong style={{ fontSize: 16 }}>
-              {menuItems.find(item => item.key === location.pathname)?.label || '后台管理系统'}
-            </Text>
+            <Title level={4} style={{ margin: 0, fontSize: 18, fontFamily: 'var(--font-heading)' }}>
+              {menuItems.find(item => item.key === location.pathname)?.label || 'Dashboard Overview'}
+            </Title>
           </Space>
 
           {/* 右侧：通知和用户信息 */}
           <Space size="large">
             {/* 通知图标 */}
-            <Badge count={5} size="small">
-              <BellOutlined
+            <Badge count={5} size="small" offset={[-2, 6]} color="#f43f5e">
+              <div
                 style={{
-                  fontSize: 18,
+                  width: 36,
+                  height: 36,
+                  borderRadius: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: '#f8fafc',
+                  border: '1px solid #f1f5f9',
                   cursor: 'pointer',
-                  transition: 'color 0.3s',
+                  transition: 'all 0.2s',
                 }}
-                onMouseEnter={(e) => (e.target.style.color = '#1890ff')}
-                onMouseLeave={(e) => (e.target.style.color = 'inherit')}
-              />
+              >
+                <BellOutlined style={{ fontSize: 18, color: '#64748b' }} />
+              </div>
             </Badge>
 
             {/* 用户信息下拉菜单 */}
             <Dropdown
               menu={{ items: userMenuItems }}
               placement="bottomRight"
-              arrow
+              arrow={{ pointAtCenter: true }}
             >
-              <Space style={{ cursor: 'pointer' }}>
+              <Space style={{ cursor: 'pointer', padding: '4px 8px', borderRadius: '8px', transition: 'all 0.2s' }} className="hover-bg">
                 <Avatar
                   style={{
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+                    boxShadow: '0 2px 8px rgba(99, 102, 241, 0.3)',
                   }}
                   size="default"
                 >
                   {user?.username?.charAt(0).toUpperCase()}
                 </Avatar>
-                <Text>{user?.username}</Text>
+                <Text strong style={{ fontSize: 14 }}>{user?.username}</Text>
               </Space>
             </Dropdown>
           </Space>
@@ -270,11 +289,9 @@ const AntdLayout = () => {
         {/* 内容区域 */}
         <Content
           style={{
-            margin: '24px 16px',
-            padding: 24,
+            margin: '32px 24px',
+            padding: 0,
             minHeight: 280,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
           }}
         >
           <Outlet />

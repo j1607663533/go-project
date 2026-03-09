@@ -68,6 +68,9 @@ service.interceptors.response.use(
         case 500:
           message = "服务器内部错误";
           break;
+        case 409:
+          message = "用户名或邮箱已存在";
+          break;
         default:
           message = `网络异常 (${status})`;
       }
@@ -86,6 +89,8 @@ service.interceptors.response.use(
 function handleAuthError() {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
+  // 跳转到登录页面
+  window.location.href = "/login";
 }
 
 // 封装常用的请求方法

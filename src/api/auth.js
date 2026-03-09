@@ -79,3 +79,24 @@ export const getUserMenus = () => {
   const menusStr = localStorage.getItem("menus");
   return menusStr ? JSON.parse(menusStr) : [];
 };
+
+// --- 微信扫码登录相关 ---
+
+/**
+ * 获取扫码登录二维码
+ * @returns {Promise<{qr_url: string, scene_id: string, expire_at: number}>}
+ */
+export const getWeChatQrCode = async () => {
+  const response = await http.get('/auth/wechat/qrcode');
+  return response;
+};
+
+/**
+ * 轮询检查微信登录状态
+ * @param {string} sceneId 场景ID
+ * @returns {Promise<{status: string, token?: string, user?: any, menus?: any[]}>}
+ */
+export const checkWeChatLoginStatus = async (sceneId) => {
+  const response = await http.get(`/auth/wechat/status?scene_id=${sceneId}`);
+  return response;
+};

@@ -11,6 +11,7 @@ import (
 )
 
 // MenuController 菜单控制器
+
 type MenuController struct {
 	menuService services.MenuService
 }
@@ -21,6 +22,13 @@ func NewMenuController(menuService services.MenuService) *MenuController {
 }
 
 // GetMenuTree 获取菜单树
+// @Summary 获取菜单树
+// @Tags 菜单管理
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Success 200 {object} map[string]interface{}
+// @Router /menu/tree [get]
 func (ctrl *MenuController) GetMenuTree(c *gin.Context) {
 	menus, err := ctrl.menuService.GetMenuTree()
 	if err != nil {

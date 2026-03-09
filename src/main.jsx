@@ -90,9 +90,33 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       locale={zhCN}
       theme={{
         token: {
-          colorPrimary: '#667eea',
-          borderRadius: 8,
-          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+          colorPrimary: '#6366f1', // Electric Indigo
+          colorSuccess: '#10b981', // Vivid Mint
+          colorWarning: '#f59e0b',
+          colorError: '#f43f5e', // Sunset Rose
+          borderRadius: 12,
+          fontFamily: "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+          fontSize: 14,
+          wireframe: false,
+        },
+        components: {
+          Card: {
+            boxShadowTertiary: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+          },
+          Button: {
+            controlHeight: 38,
+            fontWeight: 500,
+          },
+          Layout: {
+            headerBg: 'rgba(255, 255, 255, 0.8)',
+            siderBg: '#0f172a',
+          },
+          Menu: {
+            itemBg: 'transparent',
+            itemColor: 'rgba(255, 255, 255, 0.65)',
+            itemSelectedBg: 'rgba(99, 102, 241, 0.15)',
+            itemSelectedColor: '#fff',
+          },
         },
         algorithm: theme.defaultAlgorithm,
       }}

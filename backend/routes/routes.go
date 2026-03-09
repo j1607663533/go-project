@@ -40,9 +40,10 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	orderService := services.NewOrderService(orderRepo)
 	menuService := services.NewMenuService(menuRepo, userRepo, roleRepo)
 	roleService := services.NewRoleService(roleRepo)
+	wechatService := services.NewWechatService()
 
 	// Controller 层 - 注入 Service
-	userController := controllers.NewUserController(userService)
+	userController := controllers.NewUserController(userService, wechatService)
 	orderController := controllers.NewOrderController(orderService)
 	menuController := controllers.NewMenuController(menuService)
 	roleController := controllers.NewRoleController(roleService)

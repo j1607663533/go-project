@@ -7,6 +7,7 @@ import {
   DollarOutlined,
   EyeOutlined,
 } from '@ant-design/icons';
+import { motion } from 'framer-motion';
 
 const { Title, Text } = Typography;
 
@@ -20,7 +21,7 @@ const AntdHome = () => {
       suffix: '人',
       trend: 'up',
       trendValue: 12.5,
-      color: '#1890ff',
+      color: '#6366f1',
     },
     {
       title: '总订单数',
@@ -29,7 +30,7 @@ const AntdHome = () => {
       suffix: '单',
       trend: 'up',
       trendValue: 8.2,
-      color: '#52c41a',
+      color: '#10b981',
     },
     {
       title: '总销售额',
@@ -38,7 +39,7 @@ const AntdHome = () => {
       suffix: '元',
       trend: 'down',
       trendValue: 3.1,
-      color: '#faad14',
+      color: '#f59e0b',
     },
     {
       title: '页面浏览量',
@@ -47,7 +48,7 @@ const AntdHome = () => {
       suffix: '次',
       trend: 'up',
       trendValue: 15.8,
-      color: '#722ed1',
+      color: '#a855f7',
     },
   ];
 
@@ -96,6 +97,7 @@ const AntdHome = () => {
       title: '订单号',
       dataIndex: 'orderId',
       key: 'orderId',
+      render: (text) => <Text strong style={{ color: '#6366f1' }}>{text}</Text>
     },
     {
       title: '客户',
@@ -111,7 +113,11 @@ const AntdHome = () => {
       title: '金额',
       dataIndex: 'amount',
       key: 'amount',
-      render: (amount) => `¥${amount.toLocaleString()}`,
+      render: (amount) => (
+        <Text strong>
+          ¥{amount.toLocaleString()}
+        </Text>
+      ),
     },
     {
       title: '状态',
@@ -119,187 +125,195 @@ const AntdHome = () => {
       key: 'status',
       render: (status) => {
         const statusMap = {
-          completed: { color: 'success', text: '已完成' },
-          pending: { color: 'warning', text: '待处理' },
-          processing: { color: 'processing', text: '处理中' },
+          completed: { color: '#10b981', text: '已完成' },
+          pending: { color: '#f59e0b', text: '待处理' },
+          processing: { color: '#6366f1', text: '处理中' },
         };
-        return <Tag color={statusMap[status].color}>{statusMap[status].text}</Tag>;
+        return (
+          <Tag color={statusMap[status].color} style={{ borderRadius: 6, border: 'none' }}>
+            {statusMap[status].text}
+          </Tag>
+        );
       },
     },
     {
       title: '日期',
       dataIndex: 'date',
       key: 'date',
+      render: (text) => <Text type="secondary">{text}</Text>
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { 
+        type: 'spring',
+        stiffness: 100
+      }
+    }
+  };
+
   return (
-    <div>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
       {/* 欢迎标题 */}
-      <div style={{ marginBottom: 24 }}>
-        <Title level={2}>欢迎回来！👋</Title>
-        <Text type="secondary">这是您的数据概览</Text>
-      </div>
+      <motion.div variants={itemVariants} style={{ marginBottom: 32 }}>
+        <Title level={1} style={{ margin: 0, fontFamily: 'var(--font-heading)' }}>
+          欢迎回来，<span className="gradient-text">管理员</span> 👋
+        </Title>
+        <Text type="secondary" style={{ fontSize: 16 }}>这是您的实时业务数据概览</Text>
+      </motion.div>
 
       {/* 统计卡片 */}
-      <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
+      <Row gutter={[20, 20]} style={{ marginBottom: 32 }}>
         {statisticsData.map((stat, index) => (
           <Col xs={24} sm={12} lg={6} key={index}>
-            <Card
-              bordered={false}
-              style={{
-                background: `linear-gradient(135deg, ${stat.color}15 0%, ${stat.color}05 100%)`,
-                borderLeft: `4px solid ${stat.color}`,
-              }}
-            >
-              <Space direction="vertical" size="small" style={{ width: '100%' }}>
-                <Text type="secondary" style={{ fontSize: 14 }}>
-                  {stat.title}
-                </Text>
-                <Statistic
-                  value={stat.value}
-                  prefix={stat.prefix}
-                  suffix={stat.suffix}
-                  valueStyle={{ 
-                    fontSize: 24, 
-                    fontWeight: 'bold',
-                    color: stat.color,
-                  }}
-                />
-                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                  {stat.trend === 'up' ? (
-                    <ArrowUpOutlined style={{ color: '#52c41a', fontSize: 12 }} />
-                  ) : (
-                    <ArrowDownOutlined style={{ color: '#ff4d4f', fontSize: 12 }} />
-                  )}
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: stat.trend === 'up' ? '#52c41a' : '#ff4d4f',
+            <motion.div variants={itemVariants}>
+              <Card
+                bordered={false}
+                style={{
+                  background: `linear-gradient(135deg, ${stat.color}08 0%, #ffffff 100%)`,
+                  borderTop: `4px solid ${stat.color}`,
+                }}
+              >
+                <Space direction="vertical" size="small" style={{ width: '100%' }}>
+                  <Text type="secondary" style={{ fontSize: 13, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                    {stat.title}
+                  </Text>
+                  <Statistic
+                    value={stat.value}
+                    prefix={stat.prefix}
+                    suffix={<span style={{ fontSize: 14 }}>{stat.suffix}</span>}
+                    valueStyle={{ 
+                      fontSize: 28, 
+                      fontFamily: 'var(--font-heading)',
+                      fontWeight: 700,
+                      color: '#1e293b',
                     }}
-                  >
-                    {stat.trendValue}%
-                  </Text>
-                  <Text type="secondary" style={{ fontSize: 12 }}>
-                    vs 上月
-                  </Text>
-                </div>
-              </Space>
-            </Card>
+                  />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <Tag 
+                      color={stat.trend === 'up' ? 'success' : 'error'}
+                      icon={stat.trend === 'up' ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
+                      style={{ border: 'none', borderRadius: 4, margin: 0 }}
+                    >
+                      {stat.trendValue}%
+                    </Tag>
+                    <Text type="secondary" style={{ fontSize: 12 }}>
+                      vs 上月
+                    </Text>
+                  </div>
+                </Space>
+              </Card>
+            </motion.div>
           </Col>
         ))}
       </Row>
 
       {/* 数据图表和最近订单 */}
-      <Row gutter={[16, 16]}>
+      <Row gutter={[20, 20]}>
         {/* 销售趋势 */}
         <Col xs={24} lg={12}>
-          <Card
-            title="销售趋势"
-            bordered={false}
-            extra={<a href="#">查看详情</a>}
-          >
-            <Space direction="vertical" size="large" style={{ width: '100%' }}>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                  <Text>本月目标完成度</Text>
-                  <Text strong>75%</Text>
+          <motion.div variants={itemVariants}>
+            <Card
+              title={<span style={{ fontFamily: 'var(--font-heading)' }}>销售趋势分析</span>}
+              bordered={false}
+              extra={<a href="#" style={{ fontSize: 13 }}>详细统计 &rarr;</a>}
+              style={{ height: '100%' }}
+            >
+              <Space direction="vertical" size="large" style={{ width: '100%' }}>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
+                    <Text strong>本月目标完成度</Text>
+                    <Text style={{ color: '#6366f1' }}>75%</Text>
+                  </div>
+                  <Progress percent={75} strokeColor={{ '0%': '#6366f1', '100%': '#a855f7' }} showInfo={false} strokeWidth={10} />
                 </div>
-                <Progress percent={75} strokeColor="#1890ff" />
-              </div>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                  <Text>客户满意度</Text>
-                  <Text strong>92%</Text>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
+                    <Text strong>客户满意度</Text>
+                    <Text style={{ color: '#10b981' }}>92%</Text>
+                  </div>
+                  <Progress percent={92} strokeColor="#10b981" showInfo={false} strokeWidth={10} />
                 </div>
-                <Progress percent={92} strokeColor="#52c41a" />
-              </div>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                  <Text>订单完成率</Text>
-                  <Text strong>88%</Text>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
+                    <Text strong>订单完成率</Text>
+                    <Text style={{ color: '#f43f5e' }}>88%</Text>
+                  </div>
+                  <Progress percent={88} strokeColor="#f43f5e" showInfo={false} strokeWidth={10} />
                 </div>
-                <Progress percent={88} strokeColor="#722ed1" />
-              </div>
-            </Space>
-          </Card>
+              </Space>
+            </Card>
+          </motion.div>
         </Col>
 
         {/* 快速操作 */}
         <Col xs={24} lg={12}>
-          <Card title="快速操作" bordered={false}>
-            <Row gutter={[16, 16]}>
-              <Col span={12}>
-                <Card
-                  hoverable
-                  style={{
-                    textAlign: 'center',
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    color: '#fff',
-                  }}
-                >
-                  <ShoppingCartOutlined style={{ fontSize: 32, marginBottom: 8 }} />
-                  <div>新建订单</div>
-                </Card>
-              </Col>
-              <Col span={12}>
-                <Card
-                  hoverable
-                  style={{
-                    textAlign: 'center',
-                    background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                    color: '#fff',
-                  }}
-                >
-                  <UserOutlined style={{ fontSize: 32, marginBottom: 8 }} />
-                  <div>添加用户</div>
-                </Card>
-              </Col>
-              <Col span={12}>
-                <Card
-                  hoverable
-                  style={{
-                    textAlign: 'center',
-                    background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                    color: '#fff',
-                  }}
-                >
-                  <DollarOutlined style={{ fontSize: 32, marginBottom: 8 }} />
-                  <div>财务报表</div>
-                </Card>
-              </Col>
-              <Col span={12}>
-                <Card
-                  hoverable
-                  style={{
-                    textAlign: 'center',
-                    background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-                    color: '#fff',
-                  }}
-                >
-                  <EyeOutlined style={{ fontSize: 32, marginBottom: 8 }} />
-                  <div>数据分析</div>
-                </Card>
-              </Col>
-            </Row>
-          </Card>
+          <motion.div variants={itemVariants}>
+            <Card title={<span style={{ fontFamily: 'var(--font-heading)' }}>快捷功能</span>} bordered={false}>
+              <Row gutter={[16, 16]}>
+                {[
+                  { label: '新建订单', icon: <ShoppingCartOutlined />, gradient: 'linear-gradient(135deg, #6366f1, #818cf8)' },
+                  { label: '添加用户', icon: <UserOutlined />, gradient: 'linear-gradient(135deg, #f43f5e, #fb7185)' },
+                  { label: '财务报表', icon: <DollarOutlined />, gradient: 'linear-gradient(135deg, #10b981, #34d399)' },
+                  { label: '数据分析', icon: <EyeOutlined />, gradient: 'linear-gradient(135deg, #a855f7, #c084fc)' },
+                ].map((action, i) => (
+                  <Col span={12} key={i}>
+                    <Card
+                      hoverable
+                      style={{
+                        textAlign: 'center',
+                        background: action.gradient,
+                        border: 'none',
+                      }}
+                      bodyStyle={{ padding: '24px 16px' }}
+                    >
+                      <div style={{ color: '#fff' }}>
+                        <div style={{ fontSize: 24, marginBottom: 8 }}>{action.icon}</div>
+                        <div style={{ fontWeight: 600, fontSize: 13, letterSpacing: 0.5 }}>{action.label}</div>
+                      </div>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            </Card>
+          </motion.div>
         </Col>
       </Row>
 
       {/* 最近订单 */}
-      <Card
-        title="最近订单"
-        bordered={false}
-        style={{ marginTop: 16 }}
-        extra={<a href="/orders">查看全部</a>}
-      >
-        <Table
-          columns={orderColumns}
-          dataSource={recentOrders}
-          pagination={false}
-        />
-      </Card>
-    </div>
+      <motion.div variants={itemVariants} style={{ marginTop: 24 }}>
+        <Card
+          title={<span style={{ fontFamily: 'var(--font-heading)' }}>最近交易记录</span>}
+          bordered={false}
+          extra={<a href="/orders" style={{ fontSize: 13 }}>管理所有订单 &rarr;</a>}
+        >
+          <Table
+            columns={orderColumns}
+            dataSource={recentOrders}
+            pagination={false}
+            size="middle"
+          />
+        </Card>
+      </motion.div>
+    </motion.div>
   );
 };
 
