@@ -16,6 +16,7 @@ type UserRepository interface {
 	Create(user *models.User) error
 	Update(user *models.User) error
 	Delete(id uint) error
+	CountByRoleID(roleID uint) (int64, error)
 }
 
 // userRepository 用户数据访问实现
@@ -92,4 +93,11 @@ func (r *userRepository) Update(user *models.User) error {
 // Delete 删除用户
 func (r *userRepository) Delete(id uint) error {
 	return r.db.Delete(&models.User{}, id).Error
+}
+
+// CountByRoleID 根据角色ID统计用户数量
+func (r *userRepository) CountByRoleID(roleID uint) (int64, error) {
+	var count int64
+	err := r.db.Model(&models.User{}).Where("role_id = ?", roleID).Count(&count).Error
+	return count, err
 }

@@ -88,6 +88,8 @@ const SystemUsers = () => {
       handleCloseModal();
       loadUsers();
     } catch (error) {
+      console.log(error);
+      
       if (error.errorFields) {
         message.error('请检查表单输入');
       } else {

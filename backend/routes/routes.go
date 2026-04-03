@@ -34,20 +34,27 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	orderRepo := repositories.NewOrderRepository(db)
 	menuRepo := repositories.NewMenuRepository(db)
 	roleRepo := repositories.NewRoleRepository(db)
+	fileRepo := repositories.NewFileRepository(db)
+	lotteryRepo := repositories.NewLotteryRepository(db)
 
 	// Service 层 - 注入 Repository
 	userService := services.NewUserService(userRepo, menuRepo)
 	orderService := services.NewOrderService(orderRepo)
 	menuService := services.NewMenuService(menuRepo, userRepo, roleRepo)
 	roleService := services.NewRoleService(roleRepo)
+	fileService := services.NewFileService(fileRepo)
 	wechatService := services.NewWechatService()
+	lotteryService := services.NewLotteryService(lotteryRepo)
 
 	// Controller 层 - 注入 Service
 	userController := controllers.NewUserController(userService, wechatService)
 	orderController := controllers.NewOrderController(orderService)
 	menuController := controllers.NewMenuController(menuService)
 	roleController := controllers.NewRoleController(roleService)
+	fileController := controllers.NewFileController(fileService)
+	videoController := controllers.NewVideoController()
 	captchaController := controllers.NewCaptchaController()
+	lotteryController := controllers.NewLotteryController(lotteryService)
 
 	// 健康检查
 	r.GET("/health", func(c *gin.Context) {
@@ -69,7 +76,10 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	SetupOrderRoutes(api, orderController)                  // 订单路由
 	SetupMenuRoutes(api, menuController)                    // 菜单路由
 	SetupRoleRoutes(api, roleController)                    // 角色路由
+	SetupFileRoutes(api, fileController)                    // 文件路由
+	SetupVideoRoutes(api, videoController)                   // 视频路由
 	RegisterAIRoutes(api)                                   // AI 路由
+	SetupLotteryRoutes(api, lotteryController)              // 抽奖路由
 
 	return r
 }

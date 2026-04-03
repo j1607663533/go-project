@@ -8,7 +8,7 @@ import (
 type Response struct {
 	Code    int         `json:"code"`
 	Message string      `json:"message"`
-	Data    interface{} `json:"data,omitempty"`
+	Data    interface{} `json:"data"`
 }
 
 // SuccessResponse 成功响应
@@ -49,12 +49,14 @@ type PaginationResponse struct {
 
 // SuccessPaginationResponse 成功分页响应
 func SuccessPaginationResponse(c *gin.Context, data interface{}, total int64, page, size int) {
-	c.JSON(200, PaginationResponse{
+	c.JSON(200, Response{
 		Code:    0,
 		Message: "success",
-		Data:    data,
-		Total:   total,
-		Page:    page,
-		Size:    size,
+		Data: gin.H{
+			"list":      data,
+			"total":     total,
+			"page":      page,
+			"page_size": size,
+		},
 	})
 }

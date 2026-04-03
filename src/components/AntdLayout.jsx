@@ -22,6 +22,9 @@ import {
   TeamOutlined,
   MenuOutlined as MenuIconOutlined,
   RobotOutlined,
+  FileOutlined,
+  VideoCameraOutlined,
+  GiftOutlined,
 } from '@ant-design/icons';
 import { logout, getCurrentUser, getUserMenus } from '../api/auth';
 
@@ -37,6 +40,8 @@ const iconMap = {
   TeamOutlined: <TeamOutlined />,
   MenuOutlined: <MenuIconOutlined />,
   RobotOutlined: <RobotOutlined />,
+  FileOutlined: <FileOutlined />,
+  VideoCameraOutlined: <VideoCameraOutlined />,
 };
 
 const AntdLayout = () => {
@@ -62,6 +67,44 @@ const AntdLayout = () => {
         key: '/ai-chat',
         icon: <RobotOutlined />,
         label: 'AI 智能对话',
+      });
+    }
+
+    // 强制加入文件管理菜单项
+    const hasFiles = items.some(item => item.key === '/files');
+    if (!hasFiles) {
+      items.push({
+        key: '/files',
+        icon: <FileOutlined />,
+        label: '文件管理',
+      });
+    }
+    // 强制加入视频工具菜单项
+    const hasVideo = items.some(item => item.key === '/video-tools');
+    if (!hasVideo) {
+      items.push({
+        key: '/video-tools',
+        icon: <VideoCameraOutlined />,
+        label: '视频去水印',
+      });
+    }
+
+    // 强制加入抽奖大转盘菜单项
+    const hasLottery = items.some(item => item.key === '/lottery');
+    if (!hasLottery) {
+      items.push({
+        key: '/lottery',
+        icon: <GiftOutlined />,
+        label: '抽奖大转盘',
+      });
+    }
+    // 强制加入抽奖系统设置
+    const hasLotteryAdmin = items.some(item => item.key === '/lottery-admin');
+    if (!hasLotteryAdmin) {
+      items.push({
+        key: '/lottery-admin',
+        icon: <SettingOutlined />,
+        label: '抽奖系统设置',
       });
     }
     

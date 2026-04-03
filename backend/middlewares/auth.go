@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	"gin-backend/utils"
 	"net/http"
 	"strings"
@@ -14,9 +13,23 @@ func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 从请求头获取 token
 
-		fmt.Println(c.GetHeader("Authorization"))
 		authHeader := c.GetHeader("Authorization")
-		if authHeader == "" {
+		token := ""
+
+		if authHeader != "" {
+			// 验证 token 格式
+			parts := strings.SplitN(authHeader, " ", 2)
+			if len(parts) == 2 && parts[0] == "Bearer" {
+				token = parts[1]
+			}
+		}
+
+		// 如果 Header 中没有，尝试从查询参数获取
+		if token == "" {
+			token = c.Query("token")
+		}
+
+		if token == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"code":    401,
 				"message": "未提供认证令牌",
@@ -24,19 +37,6 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
-		// 验证 token 格式
-		parts := strings.SplitN(authHeader, " ", 2)
-		if !(len(parts) == 2 && parts[0] == "Bearer") {
-			c.JSON(http.StatusUnauthorized, gin.H{
-				"code":    401,
-				"message": "认证令牌格式错误",
-			})
-			c.Abort()
-			return
-		}
-
-		token := parts[1]
 
 		// 检查 token 是否在黑名单中
 		if utils.IsTokenBlacklisted(token) {

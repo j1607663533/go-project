@@ -59,6 +59,11 @@ func (m *MockUserRepository) Delete(id uint) error {
 	return args.Error(0)
 }
 
+func (m *MockUserRepository) CountByRoleID(roleID uint) (int64, error) {
+	args := m.Called(roleID)
+	return args.Get(0).(int64), args.Error(1)
+}
+
 // 确保 MockUserRepository 实现了 UserRepository 接口
 var _ repositories.UserRepository = (*MockUserRepository)(nil)
 

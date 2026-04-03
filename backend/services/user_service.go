@@ -125,6 +125,18 @@ func (s *userService) UpdateUser(id uint, req *models.UserUpdateRequest) (*model
 		return nil, err
 	}
 
+	// 当超级管理员用户改为普通用户时，查询用户表是否存在其他超级管理员
+	// 如果不存在则不能修改，并给出提示
+	if user.RoleID == 1 && req.RoleID > 0 && req.RoleID != 1 {
+		count, err := s.userRepo.CountByRoleID(1)
+		if err != nil {
+			return nil, err
+		}
+		if count <= 1 {
+			return nil, errors.New("系统中必须存在一个系统管理员")
+		}
+	}
+
 	// 业务逻辑：如果更新邮箱，检查邮箱是否已被其他用户使用
 	if req.Email != "" && req.Email != user.Email {
 		if existingUser, _ := s.userRepo.FindByEmail(req.Email); existingUser != nil && existingUser.ID != id {

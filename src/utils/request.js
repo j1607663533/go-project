@@ -34,8 +34,8 @@ service.interceptors.response.use(
   (response) => {
     const res = response.data;
 
-    // 根据后端约定的状态码进行判断 (假设 0 为成功)
-    if (res.code !== 0) {
+    // 根据后端约定的状态码进行判断 (0 或 200 为成功)
+    if (res.code !== 0 && res.code !== 200) {
       const errorMsg = res.message || "未知业务错误";
       
       // 特殊处理：未授权/登录过期
@@ -46,8 +46,8 @@ service.interceptors.response.use(
       return Promise.reject(new Error(errorMsg));
     }
 
-    // 返回脱壳后的业务数据
-    return res.data;
+    // 返回脱壳后的业务数据，如果不存在 data 字段则返回完整的 res 对象以便读取提醒信息
+    return res.data !== undefined ? res.data : res;
   },
   (error) => {
     let message = "连接服务器失败";
@@ -65,14 +65,11 @@ service.interceptors.response.use(
         case 404:
           message = "接口请求地址不存在";
           break;
-        case 500:
-          message = "服务器内部错误";
-          break;
         case 409:
           message = "用户名或邮箱已存在";
           break;
         default:
-          message = `网络异常 (${status})`;
+          message = error.response.data.message;
       }
     } else if (error.request) {
       message = "网络无响应，请查看网络状态";

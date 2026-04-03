@@ -38,7 +38,7 @@ func main() {
 
 	// 自动迁移数据库表
 	log.Println("开始数据库迁移...")
-	if err := config.AutoMigrate(&models.User{}, &models.Payment{}, &models.Order{}); err != nil {
+	if err := config.AutoMigrate(&models.User{}, &models.Payment{}, &models.Order{}, &models.File{}, &models.LotteryActivity{}, &models.LotteryPrize{}, &models.LotteryRecord{}); err != nil {
 		log.Fatalf("数据库迁移失败: %v", err)
 	}
 	log.Println("数据库迁移完成")

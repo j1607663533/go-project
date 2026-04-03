@@ -20,6 +20,10 @@ import MenuDebug from './pages/MenuDebug.jsx';
 import Layout from './components/Layout.jsx';
 import AntdLayout from './components/AntdLayout.jsx';
 import AiChat from './pages/AiChat.jsx';
+import FileManager from './pages/FileManager.jsx';
+import VideoTools from './pages/VideoTools.jsx';
+import Lottery from './pages/Lottery.jsx';
+import LotteryAdmin from './pages/LotteryAdmin.jsx';
 import { isAuthenticated } from './api/auth';
 import './index.css'
 import 'antd/dist/reset.css';
@@ -72,8 +76,24 @@ const router = createBrowserRouter([
         element: <AiChat />,
       },
       {
+        path: "files",
+        element: <ProtectedRoute><FileManager /></ProtectedRoute>,
+      },
+      {
+        path: "video-tools",
+        element: <ProtectedRoute><VideoTools /></ProtectedRoute>,
+      },
+      {
         path: "debug",
         element: <MenuDebug />,
+      },
+      {
+        path: "lottery",
+        element: <ProtectedRoute><Lottery /></ProtectedRoute>,
+      },
+      {
+        path: "lottery-admin",
+        element: <ProtectedRoute><LotteryAdmin /></ProtectedRoute>,
       },
     ],
   },
